@@ -58,9 +58,15 @@ void display_the_sprite(){
   int index = 0;
   for(int i = 0; i < HT; i ++){
     for(int j = 0; j < VT; j++){
-       if(i == 0 || j == 0 || i == HT || j == VT){  // Load wall tiles
-         //tiles[index] = new Tiles(4); //default constructor
+       if(i == 0 || j == 0 || j == VT - 1 || i == HT - 1|| j == (VT - 1)/2 || i == HT/2){  // Load wall tiles
+         
          image(my_sprites[4], j* 64, i * 64);
+         
+         if(i == HT/2 + 1 && j == (VT-1)/2){ // add door.
+           image(my_sprites[5], j* 64, i * 64);
+         }
+         
+         
        }
        else{
          //tiles[index] = new Tiles(1);// 
