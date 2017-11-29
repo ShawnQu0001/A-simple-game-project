@@ -25,6 +25,7 @@ int level = 1;
 //Character initial position variables
 int x = 832;
 int y = 640;
+int cInitialIndex = 166; // 
 int stepSize = 16;
 float speed = 2.0;
 
@@ -128,12 +129,16 @@ void draw(){
     if ((keyPressed == true) && (key == CODED)) {
       if (keyCode == UP) { 
         y -= stepSize;
+        cInitialIndex -= 12;
       } else if (keyCode == DOWN) { 
         y += stepSize;
+        cInitialIndex += 12;
       } else if (keyCode == LEFT) { 
         x -= stepSize;
+        cInitialIndex -= 1;
       } else if (keyCode == RIGHT) {
         x += stepSize;
+        cInitialIndex += 1;
       }
     }
     
@@ -318,8 +323,6 @@ void displayMap(int level){
          image(my_sprites[1], j * 64, i * 64);
          t.setPassable(false);
        }
-       // Need map design pattern here to randomly generate tiles.
-       // Otherwise, we have to manually create each map.
         index++;
      }   
     } 
