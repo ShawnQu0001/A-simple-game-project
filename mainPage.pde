@@ -212,6 +212,11 @@ void draw(){
     text("Magic " + p.getMagic(), 510, 631);
     text("Magic Resist " + p.getMagicResist(), 510, 671);
     
+     // Instruction
+    text("Press a to attack ", 10, 731);
+    text("Press i to use HP potion ", 10, 771);
+    
+    
     if(p.getHP() <=0 ){
          fill(255,0,0);
          textSize(60);
