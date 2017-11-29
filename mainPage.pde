@@ -7,6 +7,7 @@ int textFade = 2;
 PImage bgImg1, bgImg2,CImg,NImg;
 Player p1 = new Player();
 ArrayList npcList = new ArrayList<NPC>();
+int numberOfNPC = 5;
 
 final int N_SPRITES_X = 16;
 final int N_SPRITES_Y = 4;
@@ -18,7 +19,8 @@ int my_sprite_height;
 ArrayList tileList = new ArrayList<Tiles>();
 int HT = 12; // number of Horozontal tiles
 int VT = 15; // number of verticle tiles
-
+boolean isLevelCleaned = false;
+int level = 1;
 
 //Character initial position variables
 int x = 832;
@@ -111,7 +113,8 @@ void draw(){
   else if(!gameState && !fightingState){
     // Display game background1
     //----------------------------------------- Load game map/level 1 here
-    displayMap();// load the first level of the game.
+    displayMap(level);// load the first level of the game.
+    checkIfLevelCleaned();
     fill(0);
     textSize(16);
     
@@ -169,7 +172,7 @@ void draw(){
     // Display Player in fighting stage
     p1.setXPos(0);
     p1.setYPos(421);
-   // p1.setMultiplier(5);
+
     image(CImg, 0, 421 ,CImg.width, CImg.height);
     //p1.display();
     p1.displayHMp();
@@ -178,8 +181,7 @@ void draw(){
     p = (NPC) npcList.get(thNpc);
     p.setXPos(740);
     p.setYPos(421);
-    //p.setMultiplier(5);
-    //p.display();
+
     image(NImg, p.getXPos(), p.getYPos(),NImg.width, NImg.height);
     p.displayHMp();
     
@@ -210,7 +212,8 @@ void draw(){
          textSize(60);
          text("Win", 200, 400);
          text("Click Q to quit.", 200,470);
-         // npcList.remove(thNpc);
+   
+         numberOfNPC --;
     }
     if(p1.getHP() <=0 ){
          fill(255,0,0);
@@ -218,7 +221,7 @@ void draw(){
          text("Game Over", 200, 400);
          text("Click R to Restart.", 200,470);
          //p1.setHp(100);
-         // npcList.remove(thNpc);
+         
     }
    
   }
@@ -283,32 +286,48 @@ void keyPressed(){
 
 
 
-void displayMap(){
-    /**
-  *  Create Map here. Will load image into each tiles.
+void displayMap(int level){
+  /**
+  *  Create level 1 Map here. Will load image into each tiles.
   */
-  int index = 0;
-  for(int i = 0; i < HT; i ++){
-    for(int j = 0; j < VT; j++){
+  if(level == 1){
+    int index = 0;
+    for(int i = 0; i < HT; i ++){
+      for(int j = 0; j < VT; j++){
         image(my_sprites[4], j* 64, i * 64);
          tileList.add(new Tiles());
          //tileList[index].setPassable(false);
          Tiles t= (Tiles) tileList.get(index);
       
        if(i == 0 || j == 0 || j == VT - 1 || i == HT - 1|| j == (VT - 1)/2 || i == HT/2){  // Load wall tiles
-         t.setPassable(false);
-         if(i == HT/2 + 1 && j == (VT-1)/2){ // add door.
-           image(my_sprites[5], j* 64, i * 64);
-             t.setPassable(true);
+        
+         if((i == HT/2 + 1 && j == (VT-1)/2) || (i == HT/4 + 1 && j == VT / 2 ) || (i == 6 && j == 2)){ // add door.
+           image(my_sprites[6], j* 64, i * 64);
+           t.setPassable(true);
          }
+       }
+       else if( i == 1 && j == HT + 1){ // Entrance to next level
+            image(my_sprites[8], j* 64, i * 64);
+            t.setPassable(true);
+            if(isLevelCleaned){
+              level ++;
+            }
        }
        else{
          //tiles[index] = new Tiles(1);// 
          image(my_sprites[1], j * 64, i * 64);
+         t.setPassable(false);
        }
        // Need map design pattern here to randomly generate tiles.
        // Otherwise, we have to manually create each map.
         index++;
      }   
     } 
+  }
+ }
+ 
+ void checkIfLevelCleaned(){
+   if (numberOfNPC == 0){
+     isLevelCleaned = true;
+   }
  }
